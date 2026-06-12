@@ -1,0 +1,8 @@
+name = "ed-alfie-winmax-advisory"
+compatibility_date = "2026-06-12"
+compatibility_flags = [ "nodejs_compat" ]
+
+# This is where your Worker's built frontend files go!
+[assets]
+directory = "./dist"
+binding = "ASSETS"
