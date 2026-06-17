@@ -1,6 +1,0 @@
-{
-  "name": "Ed Alfie & Winmax Advisory",
-  "description": "An interactive executive client portal for Ed Alfie & Winmax Advisory, enabling founders, boards, and senior leadership teams to translate high-level strategy into disciplined systems and measurable execution.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

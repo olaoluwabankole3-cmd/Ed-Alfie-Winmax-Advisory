@@ -1,5 +1,0 @@
-﻿{
-  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
-  "Domain": "eawadvisory.com",
-  "Id": "469cb945-97f4-4d9c-a6cd-0e8e165e49cd"
-}
