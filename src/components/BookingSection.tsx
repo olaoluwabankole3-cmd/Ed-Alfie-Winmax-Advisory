@@ -99,7 +99,7 @@ export default function BookingSection({
               </div>
               <div>
                 <span className="text-[9px] font-mono text-zinc-500 block uppercase font-bold tracking-widest">Lagos Advisory Hub</span>
-                <span className="text-xs text-white font-sans group-hover:text-[#B08D57] transition-colors">Lekki Phase 1, Lagos, Nigeria</span>
+                <span className="text-xs text-white font-sans group-hover:text-[#B08D57] transition-colors">Ikeja, Lagos, Nigeria</span>
               </div>
             </div>
           </div>
