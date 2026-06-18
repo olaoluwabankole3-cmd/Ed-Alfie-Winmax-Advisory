@@ -79,7 +79,7 @@ export default function BookingSection({
               </div>
               <div>
                 <span className="text-[9px] font-mono text-zinc-500 block uppercase font-bold tracking-widest">Email Partner Office</span>
-                <span className="text-xs text-white font-mono group-hover:text-[#B08D57] transition-colors">office@eawadvisory.com</span>
+                <span className="text-xs text-white font-mono group-hover:text-[#B08D57] transition-colors">advisors@eawadvisory.com</span>
               </div>
             </div>
 
