@@ -21,19 +21,56 @@ const ai = new GoogleGenAI({
   }
 });
 
-// Form Intake Scheduler Endpoint using FREE Resend API Routing
+// Form Intake Scheduler Endpoint adjusted to catch raw frontend properties
 app.post("/api/submit-form", async (req, res) => {
-  // Extracting fields exactly matching image_ae900d.png
   const {
     contactName,
-    corporateEmail,
-    enterpriseName,
-    telephoneNumber,
-    monthlyRevenue,
-    operationalChallenge,
-    meetingDate,
-    hourZone,
-    strategicGoal
+    contactEmail,      // frontend prop name
+    contactCompany,    // frontend prop name
+    contactPhone,      // frontend prop name
+    contactRevenue,    // frontend prop name
+    contactChallenge,  // frontend prop name
+    selectedDate,      // frontend prop name
+    selectedTime,      // frontend prop name
+    contactMessage     // frontend prop name
+  } = req.body;
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Website Intake <onboarding@resend.dev>', 
+        to: 'YOUR_OUTLOOK_EMAIL@HERE.COM', 
+        subject: `🚨 New Briefing Scheduled: ${contactCompany || 'New Client Enterprise'}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; background-color: #ffffff; color: #333333;">
+            <h2 style="color: #b38f53; margin-bottom: 20px; border-bottom: 2px solid #b38f53; padding-bottom: 10px;">Briefing Intake Submission</h2>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 6px 0; font-weight: bold; width: 40%;">Contact Name:</td><td>${contactName || 'N/A'}</td></tr>
+              <tr><td style="padding: 6px 0; font-weight: bold;">Corporate Work Email:</td><td>${contactEmail || 'N/A'}</td></tr>
+              <tr><td style="padding: 6px 0; font-weight: bold;">Enterprise Name:</td><td>${contactCompany || 'N/A'}</td></tr>
+              <tr><td style="padding: 6px 0; font-weight: bold;">Telephone Number:</td><td>${contactPhone || 'N/A'}</td></tr>
+              <tr><td style="padding: 6px 0; font-weight: bold;">Monthly Revenue Size:</td><td>${contactRevenue || 'N/A'}</td></tr>
+              <tr><td style="padding: 6px 0; font-weight: bold;">Main Operational Challenge:</td><td>${contactChallenge || 'N/A'}</td></tr>
+            </table>
+
+            <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Proposed Briefing Locks</h3>
+            <p><strong>Target Meeting Date:</strong> ${selectedDate || 'Not specified'}</p>
+            <p><strong>Preferred Hour Zone:</strong> ${selectedTime || 'Not specified'}</p>
+
+            <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Brief Strategic Goal</h3>
+            <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #b38f53; font-style: italic; border-radius: 4px;">
+              "${contactMessage || 'No strategy goal stated by user.'}"
+            </div>
+          </div>
+        `
+      }),
+    });
   } = req.body;
 
   try {
