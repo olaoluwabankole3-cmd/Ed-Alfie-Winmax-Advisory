@@ -566,17 +566,49 @@ export default function App() {
   // Handle Contact & Booking submission
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!contactName || !contactEmail || !contactCompany) {
       alert("Please enter your name, corporate email, and enterprise name to request a consultation.");
       return;
     }
+
     setBookingStatus("submitting");
 
-    setTimeout(() => {
-      const generatedToken = `EAW-MEET-${Math.floor(10000 + Math.random() * 90000)}`;
-      setBookingCode(generatedToken);
-      setBookingStatus("success");
-    }, 1500);
+    try {
+      // Send the real data to your Express backend API endpoint
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contactName,
+          contactEmail,
+          contactCompany,
+          contactPhone,
+          contactRevenue,
+          contactChallenge,
+          selectedDate,
+          selectedTime,
+          contactMessage,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        const generatedToken = `EAW-MEET-${Math.floor(10000 + Math.random() * 90000)}`;
+        setBookingCode(generatedToken);
+        setBookingStatus("success");
+      } else {
+        alert(`Submission failed: ${data.error || "Unknown server error"}`);
+        setBookingStatus("idle");
+      }
+    } catch (error) {
+      console.error("Network error submitting form:", error);
+      alert("Could not connect to the booking server. Please try again.");
+      setBookingStatus("idle");
+    }
   };
 
   // Reset booking form
