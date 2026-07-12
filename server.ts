@@ -44,7 +44,7 @@ app.post("/api/submit-form", async (req, res) => {
       },
       body: JSON.stringify({
         from: 'Website Intake <onboarding@resend.dev>', 
-        to: 'YOUR_OUTLOOK_EMAIL@HERE.COM', 
+        to: 'advisors@eawadvisory.com', // <-- UPDATE THIS TO YOUR EMAIL ADDRESS
         subject: `🚨 New Briefing Scheduled: ${contactCompany || 'New Client Enterprise'}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; background-color: #ffffff; color: #333333;">
@@ -66,63 +66,6 @@ app.post("/api/submit-form", async (req, res) => {
             <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Brief Strategic Goal</h3>
             <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #b38f53; font-style: italic; border-radius: 4px;">
               "${contactMessage || 'No strategy goal stated by user.'}"
-            </div>
-          </div>
-        `
-      }),
-    });
-  } = req.body;
-
-  try {
-    // Fire the form data securely to Resend's delivery engine
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Website Intake <onboarding@resend.dev>', 
-        to: 'advisors@eawadvisory.com', // <-- 1. REPLACE THIS with your Outlook email address!
-        subject: `🚨 New Briefing Scheduled: ${enterpriseName || 'New Client Enterprise'}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; background-color: #ffffff; color: #333333;">
-            <h2 style="color: #b38f53; margin-bottom: 20px; border-bottom: 2px solid #b38f53; padding-bottom: 10px;">Briefing Intake Submission</h2>
-            
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 6px 0; font-weight: bold; width: 40%;">Contact Name:</td>
-                <td style="padding: 6px 0;">${contactName || 'N/A'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; font-weight: bold;">Corporate Work Email:</td>
-                <td style="padding: 6px 0;">${corporateEmail || 'N/A'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; font-weight: bold;">Enterprise Name:</td>
-                <td style="padding: 6px 0;">${enterpriseName || 'N/A'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; font-weight: bold;">Telephone Number:</td>
-                <td style="padding: 6px 0;">${telephoneNumber || 'N/A'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; font-weight: bold;">Monthly Revenue Size:</td>
-                <td style="padding: 6px 0;">${monthlyRevenue || 'N/A'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; font-weight: bold;">Main Operational Challenge:</td>
-                <td style="padding: 6px 0;">${operationalChallenge || 'N/A'}</td>
-              </tr>
-            </table>
-
-            <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Proposed Briefing Locks</h3>
-            <p><strong>Target Meeting Date:</strong> ${meetingDate || 'Not specified'}</p>
-            <p><strong>Preferred Hour Zone:</strong> ${hourZone || 'Not specified'}</p>
-
-            <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Brief Strategic Goal</h3>
-            <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #b38f53; font-style: italic; border-radius: 4px;">
-              "${strategicGoal || 'No strategy goal stated by user.'}"
             </div>
           </div>
         `
@@ -250,7 +193,7 @@ app.post("/api/roi-report", async (req, res) => {
 // Multi-step diagnostic analyzer endpoint
 app.post("/api/diagnostic-analyze", async (req, res) => {
   try {
-    const { answers } = req.body; // array of quiz answers { question: string, score: number, comment: string }
+    const { answers } = req.body; 
     const prompt = 
       `Formulate a summary digital maturity score analysis based on the following diagnostic assessment answers of an enterprise: \n` +
       `${JSON.stringify(answers)} \n\n` +
