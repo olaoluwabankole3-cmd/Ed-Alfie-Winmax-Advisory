@@ -21,9 +21,9 @@ const ai = new GoogleGenAI({
   }
 });
 
-// New Endpoint: Form Intake Scheduler Router using Cloudflare Email Binding
+// Form Intake Scheduler Endpoint using FREE Resend API Routing
 app.post("/api/submit-form", async (req, res) => {
-  // Destructuring fields strictly following image_ae900d.png
+  // Extracting fields exactly matching image_ae900d.png
   const {
     contactName,
     corporateEmail,
@@ -37,70 +37,70 @@ app.post("/api/submit-form", async (req, res) => {
   } = req.body;
 
   try {
-    // Cloudflare handles Email bindings inside the context process.env or global scope
-    // @ts-ignore
-    const emailService = process.env.EMAIL || globalThis.EMAIL;
+    // Fire the form data securely to Resend's delivery engine
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Website Intake <onboarding@resend.dev>', 
+        to: 'advisors@eawadvisory.com', // <-- 1. REPLACE THIS with your Outlook email address!
+        subject: `🚨 New Briefing Scheduled: ${enterpriseName || 'New Client Enterprise'}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; background-color: #ffffff; color: #333333;">
+            <h2 style="color: #b38f53; margin-bottom: 20px; border-bottom: 2px solid #b38f53; padding-bottom: 10px;">Briefing Intake Submission</h2>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold; width: 40%;">Contact Name:</td>
+                <td style="padding: 6px 0;">${contactName || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Corporate Work Email:</td>
+                <td style="padding: 6px 0;">${corporateEmail || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Enterprise Name:</td>
+                <td style="padding: 6px 0;">${enterpriseName || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Telephone Number:</td>
+                <td style="padding: 6px 0;">${telephoneNumber || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Monthly Revenue Size:</td>
+                <td style="padding: 6px 0;">${monthlyRevenue || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Main Operational Challenge:</td>
+                <td style="padding: 6px 0;">${operationalChallenge || 'N/A'}</td>
+              </tr>
+            </table>
 
-    if (!emailService) {
-      throw new Error("Cloudflare Email Service Binding could not be found in the global context.");
-    }
+            <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Proposed Briefing Locks</h3>
+            <p><strong>Target Meeting Date:</strong> ${meetingDate || 'Not specified'}</p>
+            <p><strong>Preferred Hour Zone:</strong> ${hourZone || 'Not specified'}</p>
 
-    await emailService.send({
-      to: "advisors@eawadvisory.com", // <-- REPLACE with your client's actual inbox email
-      from: "scheduler@eawadvisory.com",  // Verified active domain 
-      subject: `🚨 New Briefing Scheduled: ${enterpriseName || 'New Client Enterprise'}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; background-color: #ffffff; color: #333333;">
-          <h2 style="color: #b38f53; margin-bottom: 20px; border-bottom: 2px solid #b38f53; padding-bottom: 10px;">Briefing Intake Submission</h2>
-          
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 6px 0; font-weight: bold; width: 40%;">Contact Name:</td>
-              <td style="padding: 6px 0;">${contactName || 'N/A'}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Corporate Work Email:</td>
-              <td style="padding: 6px 0;">${corporateEmail || 'N/A'}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Enterprise Name:</td>
-              <td style="padding: 6px 0;">${enterpriseName || 'N/A'}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Telephone Number:</td>
-              <td style="padding: 6px 0;">${telephoneNumber || 'N/A'}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Monthly Revenue Size:</td>
-              <td style="padding: 6px 0;">${monthlyRevenue || 'N/A'}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Main Operational Challenge:</td>
-              <td style="padding: 6px 0;">${operationalChallenge || 'N/A'}</td>
-            </tr>
-          </table>
-
-          <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Proposed Briefing Locks</h3>
-          <p><strong>Target Meeting Date:</strong> ${meetingDate || 'Not specified'}</p>
-          <p><strong>Preferred Hour Zone:</strong> ${hourZone || 'Not specified'}</p>
-
-          <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Brief Strategic Goal</h3>
-          <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #b38f53; font-style: italic; border-radius: 4px;">
-            "${strategicGoal || 'No strategy goal stated by user.'}"
+            <h3 style="color: #b38f53; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Brief Strategic Goal</h3>
+            <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #b38f53; font-style: italic; border-radius: 4px;">
+              "${strategicGoal || 'No strategy goal stated by user.'}"
+            </div>
           </div>
-          
-          <p style="font-size: 11px; color: #999999; margin-top: 30px; text-align: center;">
-            Sent automatically from eawadvisory.com Intake Engine
-          </p>
-        </div>
-      `,
-      text: `New Intake: ${contactName} representing ${enterpriseName}. Email: ${corporateEmail}`
+        `
+      }),
     });
 
-    res.status(200).json({ success: true, message: "Intake data routed directly to advisor email inbox." });
+    if (response.ok) {
+      res.status(200).json({ success: true, message: "Intake notification sent to your Outlook." });
+    } else {
+      const errData = await response.json();
+      res.status(500).json({ success: false, error: "Resend API rejected the transaction.", details: errData });
+    }
   } catch (error: any) {
-    console.error("Email processing failed inside Worker context:", error);
-    res.status(500).json({ success: false, error: "Cloudflare Mailer failed to parse or transmit the envelope payload.", details: error.message });
+    console.error("Outbound request crashed:", error);
+    res.status(500).json({ success: false, error: "Failed to connect to transmission node.", details: error.message });
   }
 });
 
