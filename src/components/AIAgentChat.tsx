@@ -55,7 +55,7 @@ export default function AIAgentChat({
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "I am MIKE, the custom AI Assistant for EAW Advisory. Ask me about EAW's performance metrics, corporate capabilities, or operational execution frameworks."
+      content: "I am ALFIE, the custom AI Assistant for EAW Advisory. Ask me about EAW's performance metrics, corporate capabilities, or operational execution frameworks."
     }
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -83,7 +83,11 @@ export default function AIAgentChat({
     if (!textToSend.trim() || isLoading) return;
 
     const userMessage: Message = { role: "user", content: textToSend };
-    setMessages((prev) => [...prev, userMessage]);
+    
+    // Explicitly tracking the updated history array so it transmits accurately 
+    const updatedMessages = [...messages, userMessage];
+    
+    setMessages(updatedMessages);
     setInputValue("");
     setIsLoading(true);
     setShowNotification(false);
@@ -95,7 +99,7 @@ export default function AIAgentChat({
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          messages: [...messages, userMessage]
+          messages: updatedMessages
         })
       });
 
@@ -287,7 +291,7 @@ export default function AIAgentChat({
               <div className="h-9 bg-zinc-900/30 border border-zinc-900 focus-within:border-[#B08D57]/50 rounded flex items-center px-3 gap-2 transition-colors">
                 <input
                   type="text"
-                  placeholder="Ask MIKE about EAW operations..."
+                  placeholder="Ask ALFIE about EAW operations..."
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyPress}
