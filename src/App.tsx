@@ -626,7 +626,7 @@ const handleBookingSubmit = async (e: React.FormEvent) => {
     navigate("/contact-us");
     
     // Auto-populate form
-    setContactMessage(`Executive alignment requested via AI Intelligent Assistant.\nPreferred Schedule: ${dateTime}\nRequested Partner/Expert Consultation: ${advisorName}`);
+    setContactMessage(``);
     
     // Highlight or scroll to section
     setTimeout(() => {
