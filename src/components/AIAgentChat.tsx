@@ -111,17 +111,28 @@ export default function AIAgentChat({
 
 const assistantMessage: Message = {
   role: "assistant",
-  content: data.content || "I have noted your focus. Let's arrange an executive partner-level consultation."
+  content: data.content || ""
 };
+
+// 1. If it responded with a raw tool string, hide it from the user and offer a clean message instead
+if (assistantMessage.content.includes("bookAppointment")) {
+  assistantMessage.content = "Opening the Briefing Intake Scheduler for you right now...";
+}
 
 setMessages((prev) => [...prev, assistantMessage]);
 
-// Text scanner layout replacing functionCall
+// 2. Comprehensive Redirection Scanner (Catches both words and raw tools)
 const textResponse = (data.content || "").toLowerCase();
-if (textResponse.includes("schedule") || textResponse.includes("consultation") || textResponse.includes("briefing")) {
+if (
+  textResponse.includes("bookappointment") || 
+  textResponse.includes("schedule") || 
+  textResponse.includes("consultation") || 
+  textResponse.includes("briefing")
+) {
   setTimeout(() => {
+    // This safely fires the scroll/redirect layout built in App.tsx
     onScheduleFromChat("Next available", "Ed Alfie (Senior Partner)");
-  }, 1500);
+  }, 1200);
 }
     } catch (err: any) {
       console.error(err);
