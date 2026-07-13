@@ -204,7 +204,7 @@ export default function AIAgentChat({
             <div className="p-4 border-b border-zinc-900 bg-zinc-900/20 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-md bg-[#B08D57]/10 border border-[#B08D57]/20 flex items-center justify-center relative">
-                  <span className="text-[11px] font-sans font-bold text-[#B08D57]">MK</span>
+                  <span className="text-[11px] font-sans font-bold text-[#B08D57]">AF</span>
                   <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-zinc-950" />
                 </div>
                 <div>
