@@ -11,10 +11,10 @@ interface AIAgentChatProps {
 }
 
 const PRESET_PROMPTS = [
-  "Assess trade route leakage & slippages",
-  "Explain EAW's 6-Stage Execution Audit",
-  "How to book a briefing with Ed Alfie",
-  "What is cash-to-bank discipline?"
+  "How does EAW drive +45% revenue acceleration?",
+  "What is the 6-Stage Operational Execution Audit?",
+  "Analyze route-to-market logistics leakage",
+  "Schedule an Executive Consultation briefing"
 ];
 
 function formatAssistantMessage(text: string) {
