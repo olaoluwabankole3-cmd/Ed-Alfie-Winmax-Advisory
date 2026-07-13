@@ -166,7 +166,7 @@ export default function AIAgentChat({
                 <span className="font-sans text-[10px] uppercase tracking-wider text-[#B08D57] font-bold">EAW System Assistant</span>
               </div>
               <p className="text-zinc-300 text-[11px] font-sans leading-snug pr-3">
-                Ask MIKE about EAW operations, metrics, or capabilities.
+                Ask ALFIE about EAW operations, metrics, or capabilities.
               </p>
             </motion.div>
           )}
@@ -178,7 +178,7 @@ export default function AIAgentChat({
           whileTap={{ scale: 0.97 }}
           className="w-14 h-14 bg-zinc-950 hover:bg-black rounded-full flex items-center justify-center border border-[#B08D57]/50 shadow-2xl cursor-pointer relative group overflow-hidden focus:outline-none"
           id="ai-agent-launcher-btn"
-          title="Query MIKE"
+          title="Query ALFIE"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-[#B08D57]/20 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
           <div className="absolute inset-0 bg-zinc-950 rounded-full scale-95 z-0" />
@@ -209,7 +209,7 @@ export default function AIAgentChat({
                 </div>
                 <div>
                   <h3 className="text-xs font-sans font-bold text-white tracking-wide uppercase">
-                    MIKE
+                    ALFIE
                   </h3>
                   <p className="text-[9px] font-sans uppercase tracking-wider text-zinc-400">
                     EAW Operations Assistant
