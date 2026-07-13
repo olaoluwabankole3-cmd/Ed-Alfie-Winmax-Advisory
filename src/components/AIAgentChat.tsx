@@ -107,21 +107,22 @@ export default function AIAgentChat({
         throw new Error("Connectivity error.");
       }
 
-      const data = await response.json();
-      
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: data.content || "I have noted your focus. Let's arrange an executive partner-level consultation."
-      };
+     const data = await response.json();
 
-      setMessages((prev) => [...prev, assistantMessage]);
+const assistantMessage: Message = {
+  role: "assistant",
+  content: data.content || "I have noted your focus. Let's arrange an executive partner-level consultation."
+};
 
-      if (data.functionCall && data.functionCall.name === "bookAppointment") {
-        const { dateTime, advisorName } = data.functionCall.args;
-        setTimeout(() => {
-          onScheduleFromChat(dateTime || "Next available", advisorName || "Ed Alfie (Senior Partner)");
-        }, 1500);
-      }
+setMessages((prev) => [...prev, assistantMessage]);
+
+// Text scanner layout replacing functionCall
+const textResponse = (data.content || "").toLowerCase();
+if (textResponse.includes("schedule") || textResponse.includes("consultation") || textResponse.includes("briefing")) {
+  setTimeout(() => {
+    onScheduleFromChat("Next available", "Ed Alfie (Senior Partner)");
+  }, 1500);
+}
     } catch (err: any) {
       console.error(err);
       setMessages((prev) => [
